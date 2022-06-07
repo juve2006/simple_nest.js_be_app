@@ -7,16 +7,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return await this.usersRepository.find();
   }
 
-  async getOne(id: string) {
+  async getOne(id: string): Promise<User> {
     return await this.usersRepository.findOne({ where: { id: id } });
   }
 
@@ -24,13 +21,13 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.usersRepository.create(createUserDto);
     await this.usersRepository.save(createUserDto);
     return user;
   }
 
-  async update(id: string, updateUserDto: Partial<UpdateUserDto>) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     await this.usersRepository.update({ id }, updateUserDto);
     return await this.usersRepository.findOne({ where: { id: id } });
   }
