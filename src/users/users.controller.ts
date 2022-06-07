@@ -4,36 +4,40 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   @Get()
-  getAll(): string {
-    return 'getAll';
+  getAll() {
+    return this.usersService.getAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): string {
-    return 'getOne' + id;
+  getOne(@Param('id') id: string) {
+    return this.usersService.getOne(id);
   }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): string {
-    return `${createUserDto.name}`;
-  }
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return 'remove' + id;
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
-  @Put(':id')
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(id);
+  }
+
+  @Patch(':id')
   update(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string) {
-    return 'Update' + id;
+    return this.usersService.update(id, updateUserDto);
   }
 }
