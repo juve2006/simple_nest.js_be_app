@@ -4,22 +4,33 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { RolesService } from './roles/roles.service';
+import { RolesController } from './roles/roles.controller';
+import { RolesModule } from './roles/roles.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'users',
+      host: process.env['MYSQL_HOST '],
+      port: Number(process.env['MYSQL_PORT']),
+      username: process.env['MYSQL_USERNAME'],
+      password: process.env['MYSQL_PASSWORD'],
+      database: process.env['MYSQL_DB'],
       entities: [User],
       synchronize: true,
     }),
+    AuthModule,
+    RolesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, RolesController],
+  providers: [AppService, RolesService],
 })
 export class AppModule {}

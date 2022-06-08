@@ -42,7 +42,10 @@ export class UsersController {
 
   @Patch(':id')
   @UsePipes(ValidationPipe)
-  update(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string): Promise<User> {
+  update(
+    @Body() updateUserDto: UpdateUserDto,
+    @Param('id') id: string,
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 }
