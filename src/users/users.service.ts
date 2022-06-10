@@ -14,11 +14,11 @@ export class UsersService {
   ) {}
 
   async getAll(): Promise<User[]> {
-    return await this.usersRepository.find();
+    return await this.usersRepository.find({ relations: ['role'] });
   }
 
   async getOne(id: string): Promise<User> {
-    return await this.usersRepository.findOne({ where: { id: id } });
+    return await this.usersRepository.findOne({ relations: ['role'], where: { id: id } });
   }
 
   async remove(id: string): Promise<void> {
@@ -34,10 +34,10 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     await this.usersRepository.update({ id }, updateUserDto);
-    return await this.usersRepository.findOne({ where: { id: id } });
+    return await this.usersRepository.findOne({ relations: ['role'], where: { id: id } });
   }
 
   async getUserByEmail(email: string): Promise<User> {
-    return await this.usersRepository.findOne({ where: { email: email } });
+    return await this.usersRepository.findOne( {relations: ['role'], where: { email: email } });
   }
 }

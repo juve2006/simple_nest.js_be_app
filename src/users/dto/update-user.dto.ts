@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Matches, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class UpdateUserDto {
   @IsNotEmpty()
@@ -11,6 +11,5 @@ export class UpdateUserDto {
 
   @IsNotEmpty()
   @MinLength(8)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})
   readonly password: string;
 }
